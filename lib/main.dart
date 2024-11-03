@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mongocrud/mongo_service.dart';
 import 'package:mongocrud/pet_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoService().connect();
   runApp(const MainApp());
 }
 
