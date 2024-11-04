@@ -40,6 +40,19 @@ class _PetScreenState extends State<PetScreen> {
           return ListTile(
             title: Text(pet.name),
             subtitle: Text(pet.type),
+            trailing: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: null,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: null,
+                      ),
+                    ],
+                  ),
           );
         }
       ),
