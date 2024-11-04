@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:mongocrud/mongo_service.dart';
 import 'package:mongocrud/pet_model.dart';
 
@@ -29,6 +30,16 @@ class _PetScreenState extends State<PetScreen> {
     });
   }
 
+  // void _updatePet(PetModel pet) async {
+  //   await MongoService().updatePet(pet);
+  //   _fetchPets();
+  // }
+
+  void _deletePet(mongo.ObjectId id) async {
+    await MongoService().deletePet(id);
+    _fetchPets();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,16 +51,16 @@ class _PetScreenState extends State<PetScreen> {
           return ListTile(
             title: Text(pet.name),
             subtitle: Text(pet.type),
-            trailing: const Row(
+            trailing:  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
+                      const IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: null,
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: null,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => _deletePet(pet.id),
                       ),
                     ],
                   ),

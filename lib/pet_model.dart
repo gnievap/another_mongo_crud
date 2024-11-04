@@ -36,5 +36,4 @@ class PetModel {
       type: json['type'] as String,
     );
   }
-
 }

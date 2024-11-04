@@ -28,4 +28,17 @@ mongo.Db get db {
     return pets.map((pet) => PetModel.fromJson(pet)).toList();
   }
 
+  Future<void> updatePet(PetModel pet) async {
+    var collection = _db.collection('pets');
+    await collection.updateOne(
+      mongo.where.eq('_id', pet.id),
+      mongo.modify.set('name', pet.name).set('type', pet.type),
+    );
+  }
+
+  Future<void> deletePet(mongo.ObjectId id) async {
+    var collection = _db.collection('pets');
+    await collection.remove(mongo.where.eq('_id', id)); 
+  }
+
 }
