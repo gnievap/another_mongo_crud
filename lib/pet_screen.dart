@@ -12,15 +12,22 @@ class PetScreen extends StatefulWidget {
 
 class _PetScreenState extends State<PetScreen> {
   List<PetModel> pets = [];
+  late TextEditingController _nameController;
+  late TextEditingController _typeController;
+
 
   @override
   void initState() {
     super.initState();
+    _nameController = TextEditingController();
+    _typeController = TextEditingController();
     _fetchPets();
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _typeController.dispose();
     super.dispose();
   }
 
@@ -30,10 +37,48 @@ class _PetScreenState extends State<PetScreen> {
     });
   }
 
-  // void _updatePet(PetModel pet) async {
-  //   await MongoService().updatePet(pet);
-  //   _fetchPets();
-  // }
+  void _showEditDialog(PetModel pet) {
+    _nameController.text = pet.name;
+    _typeController.text = pet.type;
+    showDialog(
+      context: context, 
+      builder: (context){
+        return AlertDialog(
+          title: const Text('Editar mascota'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Nombre'),
+              ),
+              TextField(
+                controller: _typeController,
+                decoration: const InputDecoration(labelText: 'Tipo'),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Recuperar las ediciones del usuario en el modelo
+                pet.name = _nameController.text;
+                pet.type = _typeController.text;
+                _updatePet(pet);
+                Navigator.of(context).pop();
+              }, 
+              child: const Text('Actualizar')),
+          ],
+        );
+      }
+    );
+
+  }
+
+  void _updatePet(PetModel pet) async {
+    await MongoService().updatePet(pet);
+    _fetchPets();
+  }
 
   void _deletePet(mongo.ObjectId id) async {
     await MongoService().deletePet(id);
@@ -54,9 +99,9 @@ class _PetScreenState extends State<PetScreen> {
             trailing:  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: null,
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => _showEditDialog(pet),
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
