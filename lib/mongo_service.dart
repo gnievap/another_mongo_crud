@@ -41,4 +41,9 @@ mongo.Db get db {
     await collection.remove(mongo.where.eq('_id', id)); 
   }
 
+   Future<void> insertPet(PetModel pet) async {
+    var collection = _db.collection('pets');
+    await collection.insertOne(pet.toJson());
+  }
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:mongocrud/insert_pet_screen.dart';
 import 'package:mongocrud/mongo_service.dart';
 import 'package:mongocrud/pet_model.dart';
 
@@ -88,7 +89,24 @@ class _PetScreenState extends State<PetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('MongoDB CRUD'),),
+      appBar: AppBar(
+        title: const Text('MongoDB CRUD'),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const InsertPetScreen()
+                ),
+              );
+            },
+            child: const Icon( 
+              Icons.add,
+              size: 26.0,
+            ),
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: pets.length,
         itemBuilder: (context, index) {
