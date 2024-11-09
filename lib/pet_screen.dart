@@ -93,12 +93,13 @@ class _PetScreenState extends State<PetScreen> {
         title: const Text('MongoDB CRUD'),
         actions: [
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const InsertPetScreen()
-                ),
-              );
+            onTap: () async {
+             await  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const InsertPetScreen()
+                    ),
+                  );
+              _fetchPets();
             },
             child: const Icon( 
               Icons.add,
